@@ -5,22 +5,21 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import com.android.future.usb.UsbAccessory;
 import com.android.future.usb.UsbManager;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
@@ -40,14 +39,17 @@ public class MainActivity extends AppCompatActivity {
 	private FileOutputStream mFout = null;
 	private FileInputStream mFin = null;
 	private PendingIntent mPermissionIntent = null;
-	private Button mBtReceive = null;
+	private Button mBtRestart = null;
 	private Thread mThread = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+		//Toolbar will now take on default Action Bar characteristics
+		setSupportActionBar(toolbar);
+		  
 		mContext = this;
 		IntentFilter i = new IntentFilter();
 		i.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
@@ -94,13 +96,14 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		
-        mBtReceive = (Button)(findViewById(R.id.button1));
-        mBtReceive.setOnClickListener(new View.OnClickListener() {
+        mBtRestart = (Button)(findViewById(R.id.restart));
+        mBtRestart.setOnClickListener(new View.OnClickListener() {
   			@Override
 			public void onClick(View v) {
-  				if(mThread != null && mThread.isAlive()) mThread.interrupt();
-  				Toast.makeText(mContext, "SMS Sending Ready", Toast.LENGTH_SHORT).show();
-  				mThread = queueReadAndSMS();
+//  				if(mThread != null && mThread.isAlive()) mThread.interrupt();
+//  				Toast.makeText(mContext, "SMS Sending Ready", Toast.LENGTH_SHORT).show();
+//  				mThread = queueReadAndSMS();
+  				doRestart(mContext);
 			}
 		});
 
@@ -213,23 +216,23 @@ public class MainActivity extends AppCompatActivity {
 				String result = "";
 				switch (getResultCode()) {
 				case Activity.RESULT_OK:
-					// Àü¼Û¼º°ø
-					result = "Àü¼Û ¿Ï·á";
+					// ï¿½ï¿½ï¿½Û¼ï¿½ï¿½ï¿½
+					result = "ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½";
 					break;
 				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-					// Àü¼Û ½ÇÆÐ
-					result = "Àü¼Û ½ÇÆÐ";
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					result = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½";
 					break;
 				case SmsManager.RESULT_ERROR_NO_SERVICE:
-					// ¼­ºñ½º Áö¿ª ¾Æ´Ô
-					result = "¼­ºñ½º Áö¿ªÀÌ ¾Æ´Õ´Ï´Ù";
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½
+					result = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Õ´Ï´ï¿½";
 					break;
 				case SmsManager.RESULT_ERROR_RADIO_OFF:
-					// ¹«¼± ²¨Áü
-					result = "¹«¼±(Radio)°¡ ²¨Á®ÀÖ½À´Ï´Ù";
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+					result = "ï¿½ï¿½ï¿½ï¿½(Radio)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½Ï´ï¿½";
 					break;
 				case SmsManager.RESULT_ERROR_NULL_PDU:
-					// PDU ½ÇÆÐ
+					// PDU ï¿½ï¿½ï¿½ï¿½
 					result = "PDU Null";
 					break;
 
@@ -246,12 +249,12 @@ public class MainActivity extends AppCompatActivity {
 			public void onReceive(Context context, Intent intent) {
 				switch (getResultCode()) {
 				case Activity.RESULT_OK:
-					// µµÂø ¿Ï·á
-					Toast.makeText(mContext, "SMS µµÂø ¿Ï·á", Toast.LENGTH_SHORT).show();
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
+					Toast.makeText(mContext, "SMS ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½", Toast.LENGTH_SHORT).show();
 					break;
 				case Activity.RESULT_CANCELED:
-					// µµÂø ¾ÈµÊ
-					Toast.makeText(mContext, "SMS µµÂø ½ÇÆÐ", Toast.LENGTH_SHORT).show();
+					// ï¿½ï¿½ï¿½ï¿½ ï¿½Èµï¿½
+					Toast.makeText(mContext, "SMS ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_SHORT).show();
 					break;
 				}
 			}
@@ -350,4 +353,42 @@ public class MainActivity extends AppCompatActivity {
 		}
 	};
 
+	public static void doRestart(Context c) {
+        try {
+            //check if the context is given
+            if (c != null) {
+                //fetch the packagemanager so we can get the default launch activity 
+                // (you can replace this intent with any other activity if you want
+                PackageManager pm = c.getPackageManager();
+                //check if we got the PackageManager
+                if (pm != null) {
+                    //create the intent with the default start activity for your application
+                    Intent mStartActivity = pm.getLaunchIntentForPackage(
+                            c.getPackageName()
+                    );
+                    if (mStartActivity != null) {
+                        mStartActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //create a pending intent so the application is restarted after System.exit(0) was called. 
+                        // We use an AlarmManager to call this intent in 100ms
+                        int mPendingIntentId = 223344;
+                        PendingIntent mPendingIntent = PendingIntent
+                                .getActivity(c, mPendingIntentId, mStartActivity,
+                                        PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        //kill the application
+                        System.exit(0);
+                    } else {
+                        Log.e(TAG, "Was not able to restart application, mStartActivity null");
+                    }
+                } else {
+                    Log.e(TAG, "Was not able to restart application, PM null");
+                }
+            } else {
+                Log.e(TAG, "Was not able to restart application, Context null");
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "Was not able to restart application");
+        }
+    }
 }
