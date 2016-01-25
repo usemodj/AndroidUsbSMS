@@ -2,12 +2,12 @@
 <resources>
 
     <string name="app_name">PC to Mobile USB SMS</string>
-    <string name="settings"> 	1. 컴퓨터와 스마트폰을 USB케이블로 연결합니다. \n
-        2. 스마트폰에 설치한 AndroidUsbSMS 앱을 실행합니다. \n
-        3. 컴퓨터에 설치한 AndroidUsbSMSHost 프로그램을 실행합니다. \n
-        4. 스마트폰 앱에 RESTART버튼을 누릅니다. \n
-        5. 컴퓨터에서 실행한 프로그램을 이용해 SMS 메시지와 전화번호를 입력하고 \n
-         전송버튼을 누르면, 스마트폰을 통해 SMS가 발송됩니다. \n 
+    <string name="settings"> 1. 컴퓨터와 스마트폰을 USB케이블로 연결합니다. \n
+2. 스마트폰에 설치한 PC to Mobile USB SMS 앱을 실행합니다. \n
+3. 컴퓨터에 설치한 PC to Mobile USB SMS Host 프로그램을 실행합니다. \n
+4. 스마트폰 앱에 RESTART버튼을 누릅니다. \n
+5. 컴퓨터에서 실행한 프로그램을 이용해 SMS 메시지와 전화번호를 입력하고
+  전송버튼을 누르면, 스마트폰을 통해 SMS가 발송됩니다. \n 
         </string>
     <string name="action_settings">Settings</string>
     <string name="restart">Restart</string>

@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.usemodj.android.usbsms"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.1">
 
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="19"
         android:targetSdkVersion="23" />
     <uses-feature android:name="android.hardware.usb.accessory"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
